@@ -1,6 +1,8 @@
 name : cicd-workflow
 on :
-- push
+  push:
+    branches:
+    - v[0-9]+.[0-9]+ 
 
 jobs:
   cicd_assignment:
