@@ -47,6 +47,8 @@ jobs:
       if: success()
       id: Cosign_installer
       uses: sigstore/cosign-installer@v3.1.1
+      with:
+        cosign-release: 'v2.2.0'
     - name: Sign image with a key
       if: success()
       # run: cosign sign --yes --key $COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
