@@ -23,7 +23,7 @@ jobs:
         format: 'table'
         output: 'trivy-results.txt'
         exit-code: '1'
-        severity: ${{ vars.RUN_SEVERITY }}
+        severity: ${{ vars.RUN_SEVERITY_CRITICAL }}
     - name: failure slack notification
       id: failure_slack_notification
       if: failure()
