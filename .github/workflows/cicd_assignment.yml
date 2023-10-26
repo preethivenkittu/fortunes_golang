@@ -1,6 +1,7 @@
 name : cicd-workflow
 on :
 - push
+
 jobs:
   cicd_assignment:
     name: CICD Assignment
@@ -12,3 +13,12 @@ jobs:
       with:
         ref: ${{github.ref_name}}
         token: ${{github.token}}
+    - name: Run vulnerability Scanner
+      id: vul_check
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        ignore-unfixed: true
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+        severity: 'CRITICAL'
