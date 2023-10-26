@@ -24,7 +24,7 @@ jobs:
         format: 'table'
         output: 'trivy-results.txt'
         exit-code: '1'
-        severity: ${{ vars.RUN_SEVERITY_HIGH }}
+        severity: ${{ vars.RUN_SEVERITY_CRITICAL }}
     - name: Failure Slack Notification
       uses: rtCamp/action-slack-notify@v2
       if: failure()
