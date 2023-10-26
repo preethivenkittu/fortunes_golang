@@ -81,7 +81,7 @@ jobs:
         SLACK_CHANNEL: general
         SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
         SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: "*Name*: Preethi Venkittu\n*Matriculation*: A0285999U\n*Email*: e1221811@u.nus.edu\n*Git*: https://github.com/preethivenkittu/cicd_project\n*Image*: https://hub.docker.com/repository/docker/preethivenkat5/cicd_docker_project"
+        SLACK_MESSAGE: "*Name*: Preethi Venkittu\n*Matriculation*: A0285999U\n*Email*: e1221811@u.nus.edu\n*Git*: https://github.com/preethivenkittu/fortunes_golang\n*Image*: https://hub.docker.com/repository/docker/preethivenkat5/cicd_docker_project"
         SLACK_TITLE: Image build and signed
         SLACK_USERNAME: rtCamp
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
