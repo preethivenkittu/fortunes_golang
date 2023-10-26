@@ -27,5 +27,6 @@ jobs:
       id: failure_slack_notification
       run: echo "failure_slack_notification"
     - name: upload report to slack
+      if: failure()
       id: upload_to_slack
       run: cat trivy-results.txt
