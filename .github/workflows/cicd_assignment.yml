@@ -2,13 +2,12 @@ name : cicd-workflow
 on :
   push:
     branches:
-    - v[0-9]+.[0-9]+ 
+    - v[0-9]+.[0-9]+
 
 jobs:
   cicd_assignment:
     name: CICD Assignment
     runs-on : ubuntu-latest
-    permissions: write-all
     steps:
     - name: Checkout branch
       uses: actions/checkout@v4
@@ -24,7 +23,7 @@ jobs:
         format: 'table'
         output: 'trivy-results.txt'
         exit-code: '1'
-        severity: 'CRITICAL'
+        severity: ${{ vars.RUN_SEVERITY }}
     - name: failure slack notification
       id: failure_slack_notification
       if: failure()
@@ -45,7 +44,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKER_REPOSITORY }}:${{ github.sha }}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
     - name: Cosign Installer
       if: success()
       id: Cosign_installer
