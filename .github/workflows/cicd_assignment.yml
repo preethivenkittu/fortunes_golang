@@ -38,6 +38,7 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build and push
+      id: build-and-push
       if: success()
       uses: docker/build-push-action@v5
       with:
@@ -51,8 +52,6 @@ jobs:
         cosign-release: 'v2.2.0'
     - name: Sign image with a key
       if: success()
-      # run: cosign sign --yes --key $COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
-      # run: cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
       run: cosign sign --yes --key=env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
       env:
         TAGS: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
