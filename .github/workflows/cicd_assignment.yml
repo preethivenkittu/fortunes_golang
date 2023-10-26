@@ -37,6 +37,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Build and push
+      if: success()
+      uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: preethivenkat5/cicd_docker_project
     - name: cosign
       id: cosign
       if: success()
