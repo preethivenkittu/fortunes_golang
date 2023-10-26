@@ -25,8 +25,21 @@ jobs:
         severity: 'HIGH'
     - name: failure slack notification
       id: failure_slack_notification
+      if: failure()
       run: echo "failure_slack_notification"
     - name: upload report to slack
-      if: failure()
       id: upload_to_slack
+      if: failure()
       run: cat trivy-results.txt
+    - name: docker build
+      id: docker_build
+      if: success()
+      run: echo "docker_build"
+    - name: cosign
+      id: cosign
+      if: success()
+      run: echo "cosign"
+    - name: success slack notification
+      id: success_slack_notification
+      if: success()
+      run: echo "success_slack_notification"
