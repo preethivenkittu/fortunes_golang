@@ -52,6 +52,11 @@ jobs:
       uses: sigstore/cosign-installer@v3.1.1
       with:
         cosign-release: 'v2.2.0'
+    - name: write signing key to disk
+      run: 'echo "$KEY" > cosign.key'
+      shell: bash
+      env:
+        KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
     - name: Sign image with a key
       if: success()
       run: cosign sign --yes --key=env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
