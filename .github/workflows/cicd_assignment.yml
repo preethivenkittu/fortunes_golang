@@ -39,11 +39,11 @@ jobs:
     - name: upload report to slack
       id: upload_to_slack
       if: failure()
-      uses: MeilCli/slack-upload-file@v3
+      uses: adrey/slack-file-upload-action@master
       with:
-        slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
-        channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
-        file_path: 'trivy-results.txt'
+        token: ${{ secrets.SLACK_BOT_TOKEN }}
+        path: trivy-results.txt
+        channel: ${{ secrets.SLACK_CHANNEL_NAME }}
         initial_comment: 'Scan Report by Preethi'
     - name: Login to Docker Hub
       id: docker-login
