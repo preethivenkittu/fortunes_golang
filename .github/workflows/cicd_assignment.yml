@@ -10,6 +10,7 @@ jobs:
     runs-on : ubuntu-latest
     steps:
     - name: Checkout branch
+      id: checkout-branch
       uses: actions/checkout@v4
       with:
         ref: ${{github.ref_name}}
@@ -24,7 +25,7 @@ jobs:
         output: 'trivy-results.txt'
         exit-code: '1'
         severity: ${{ vars.RUN_SEVERITY_CRITICAL }}
-    - name: failure slack notification
+    - name: Send custom JSON data to Slack workflow
       id: failure_slack_notification
       if: failure()
       run: echo "failure_slack_notification"
@@ -33,6 +34,7 @@ jobs:
       if: failure()
       run: cat trivy-results.txt
     - name: Login to Docker Hub
+      id: docker-login
       uses: docker/login-action@v3
       if: success()
       with:
@@ -51,11 +53,6 @@ jobs:
       uses: sigstore/cosign-installer@v3.1.1
       with:
         cosign-release: 'v2.2.0'
-    - name: write signing key to disk
-      run: 'echo "$KEY" > cosign.key'
-      shell: bash
-      env:
-        KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
     - name: Sign image with a key
       if: success()
       run: cosign sign --yes --key=env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
@@ -64,7 +61,14 @@ jobs:
         COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
         COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
         DIGEST: ${{ steps.build-and-push.outputs.digest }}
-    - name: success slack notification
-      id: success_slack_notification
+    - name: Send custom JSON data to Slack workflow
+      uses: rtCamp/action-slack-notify@v2
       if: success()
-      run: echo "success_slack_notification"
+      env:
+        SLACK_CHANNEL: general
+        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Post Content :rocket:'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
