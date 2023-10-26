@@ -20,5 +20,5 @@ jobs:
         scan-type: 'fs'
         ignore-unfixed: true
         format: 'table'
-        output: 'trivy-results.sarif'
+        output: 'trivy-results.txt'
         severity: 'CRITICAL,'
