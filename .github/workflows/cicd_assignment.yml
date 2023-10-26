@@ -24,11 +24,17 @@ jobs:
         format: 'table'
         output: 'trivy-results.txt'
         exit-code: '1'
-        severity: ${{ vars.RUN_SEVERITY_CRITICAL }}
-    - name: Send custom JSON data to Slack workflow
-      id: failure_slack_notification
-      if: failure()
-      run: echo "failure_slack_notification"
+        severity: ${{ vars.RUN_SEVERITY_HIGH }}
+    - name: Failure Slack Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: general
+        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Failed trivy scan, see uploaded report'
+        SLACK_TITLE: Scan Failed - Preethi
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
     - name: upload report to slack
       id: upload_to_slack
       if: failure()
